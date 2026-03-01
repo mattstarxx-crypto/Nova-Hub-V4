@@ -311,6 +311,8 @@ function setBlockedNotice(url) {
 function openSite(url, label) {
   currentUrl = url;
   urlBar.textContent = label + '  —  ' + url;
+  // Intentional: always launch outside Nova Hub (no in-site iframe open).
+  openExternal(url);
   document.getElementById('loading-sub').textContent = url;
   setBlockedNotice(url);
 

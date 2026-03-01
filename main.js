@@ -281,15 +281,89 @@ const siteFrame    = document.getElementById('site-frame');
 const urlBar       = document.getElementById('browser-url-bar');
 const frameLoading = document.getElementById('frame-loading');
 const blockedNote  = document.getElementById('blocked-notice');
+const blockedTitle = document.getElementById('blocked-title');
+const blockedMsg   = document.getElementById('blocked-msg');
 
 let currentUrl  = '';
 let blockTimer  = null;
+
+const KNOWN_FRAME_BLOCKED_HOSTS = ['youtube.com', 'youtu.be', 'spotify.com', 'google.com'];
+
+function isKnownFrameBlocked(url) {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return KNOWN_FRAME_BLOCKED_HOSTS.some(h => host === h || host.endsWith('.' + h));
+  } catch (e) {
+    return false;
+  }
+}
+
+function hasBlockedMarker(doc) {
+  const raw = ((doc?.title || '') + ' ' + (doc?.body?.textContent || '')).toLowerCase();
+  return ['err_blocked_by_response', 'refused to connect', 'x-frame-options', 'frame-ancestors'].some(marker => raw.includes(marker));
+}
+
+function setBlockedNotice(url) {
+  if (blockedTitle) blockedTitle.textContent = 'BLOCKED BY SITE';
+  if (blockedMsg) blockedMsg.textContent = `This site (${url}) prevents embedding in iframes. Open it in a new tab instead.`;
+}
 
 function openSite(url, label) {
   currentUrl = url;
   urlBar.textContent = label + '  —  ' + url;
   // Intentional: always launch outside Nova Hub (no in-site iframe open).
   openExternal(url);
+  document.getElementById('loading-sub').textContent = url;
+  setBlockedNotice(url);
+
+  browserView.classList.add('open');
+  cardsArea.style.display = 'none';
+  frameLoading.classList.add('show');
+  blockedNote.classList.remove('show');
+  siteFrame.style.visibility = 'hidden';
+  siteFrame.src = '';
+  clearTimeout(blockTimer);
+
+  if (isKnownFrameBlocked(url)) {
+    showBlocked();
+    return;
+  }
+
+  requestAnimationFrame(() => { siteFrame.src = url; });
+
+  siteFrame.onload = () => {
+    clearTimeout(blockTimer);
+    frameLoading.classList.remove('show');
+    siteFrame.style.visibility = 'visible';
+
+    try {
+      const doc = siteFrame.contentDocument;
+      if (doc && doc.body && doc.body.innerHTML.trim() === '') return showBlocked();
+      if (doc && hasBlockedMarker(doc)) return showBlocked();
+    } catch (e) {
+      // Cross-origin frame: cannot inspect content.
+    }
+  };
+
+  siteFrame.onerror = () => {
+    clearTimeout(blockTimer);
+    showBlocked();
+  };
+
+  // If still loading after 7s, assume it loaded cross-origin and just show it
+  blockTimer = setTimeout(() => {
+    if (frameLoading.classList.contains('show')) {
+      frameLoading.classList.remove('show');
+      siteFrame.style.visibility = 'visible';
+    }
+  }, 7000);
+}
+
+function showBlocked() {
+  clearTimeout(blockTimer);
+  frameLoading.classList.remove('show');
+  siteFrame.style.visibility = 'hidden';
+  blockedNote.classList.add('show');
 }
 
 function closeBrowser() {

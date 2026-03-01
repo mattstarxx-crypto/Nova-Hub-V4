@@ -399,10 +399,15 @@ loadGames();
    APPS
 ═══════════════════════════════════════════ */
 const APPS = [
-  { id:"youtube",  title:"YouTube",  desc:"Watch videos & streams",  icon:"▶️",  url:"https://www.youtube.com" },
-  { id:"spotify",  title:"Spotify",  desc:"Stream music & podcasts", icon:"🎵",  url:"https://open.spotify.com" },
-  { id:"google",   title:"Google",   desc:"Search the web",          icon:"🔍",  url:"https://www.google.com" }
+  { id:"youtube",  title:"YouTube",  desc:"Watch videos & streams",  icon:"▶️",  url:"https://www.youtube.com",    openExternal:true },
+  { id:"spotify",  title:"Spotify",  desc:"Stream music & podcasts", icon:"🎵",  url:"https://open.spotify.com",   openExternal:true },
+  { id:"google",   title:"Google",   desc:"Search the web",          icon:"🔍",  url:"https://www.google.com",     openExternal:true }
 ];
+
+function openExternal(url) {
+  const w = window.open(url, '_blank', 'noopener,noreferrer');
+  if (!w) window.location.href = url;
+}
 
 function renderApps() {
   const container = document.getElementById('app-cards');
@@ -417,9 +422,9 @@ function renderApps() {
       <div class="card-badge badge-new" style="background:#7b2fff;">APP</div>
       <div class="card-title">${a.title}</div>
       <div class="card-desc">${a.desc}</div>
-      <div class="card-cat">app</div>
+      <div class="card-cat">${a.openExternal ? 'new tab' : 'app'}</div>
     `;
-    card.onclick = () => openSite(a.url, a.title);
+    card.onclick = () => (a.openExternal ? openExternal(a.url) : openSite(a.url, a.title));
     container.appendChild(card);
   });
 }

@@ -84,10 +84,7 @@ const GAMES_FALLBACK = [
   { id:"boxingrandom",   title:"Boxing Random",   desc:"Punchy pixel boxing chaos",    icon:"🥊", badge:"HOT", url:"https://html5.gamedistribution.com/rvvASMiM/e8c02771085e4c8b9de3deda5e087e0e/index.html?gd_sdk_referrer_url=https%3A%2F%2Fwww.twoplayergames.org%2Fgame%2Fboxing-random&gd_zone_config=eyJwYXJlbnRVUkwiOiJodHRwczovL3d3dy50d29wbGF5ZXJnYW1lcy5vcmcvZ2FtZS9ib3hpbmctcmFuZG9tIiwicGFyZW50RG9tYWluIjoidHdvcGxheWVyZ2FtZXMub3JnIiwidG9wRG9tYWluIjoidHdvcGxheWVyZ2FtZXMub3JnIiwiaGFzSW1wcmVzc2lvbiI6ZmFsc2UsImxvYWRlckVuYWJsZWQiOnRydWUsImhvc3QiOiJodG1sNS5nYW1lZGlzdHJpYnV0aW9uLmNvbSIsInZlcnNpb24iOiIxLjUuMTgifQ%3D%3D", category:"sports" },
   { id:"volleyrandom",   title:"Volley Random",   desc:"Pixel beach volleyball chaos", icon:"🏐", badge:"NEW", url:"https://www.twoplayergames.org/gameframe/volley-random", category:"sports" },
   { id:"ragdollarchers", title:"Ragdoll Archers", desc:"Floppy bow & arrow battles",  icon:"🏹", badge:"HOT", url:"https://bitlifeonline.github.io/ragdoll-archers/", category:"arcade" },
-  { id:"ragdollhit",       title:"Ragdoll Hit",        desc:"Smash floppy ragdolls silly",   icon:"💥", badge:"NEW", url:"https://freetoplayz.github.io/ragdoll-hit/",              category:"arcade" },
-  { id:"getawayshootout",  title:"Getaway Shootout",   desc:"Wild 2P race & shoot chaos",    icon:"🔫", badge:"HOT", url:"https://htmlxm.github.io/h4/getaway-shootout",            category:"shooter" },
-  { id:"rooftopsnipers",   title:"Rooftop Snipers",    desc:"Knock enemies off the roof",    icon:"🎯", badge:"HOT", url:"https://jasongamesdev.github.io/rooftop-snipers/",         category:"shooter" },
-  { id:"slope",            title:"Slope",              desc:"Infinite ball runner",          icon:"⚡", badge:"FAST", url:"https://slope-game.github.io",                            category:"arcade" }
+  { id:"ragdollhit",     title:"Ragdoll Hit",     desc:"Smash floppy ragdolls silly", icon:"💥", badge:"NEW", url:"https://freetoplayz.github.io/ragdoll-hit/", category:"arcade" }
 ];
 
 async function loadGames() {
